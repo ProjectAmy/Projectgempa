@@ -17,14 +17,18 @@ def ekstrasi_data():
         content = requests.get('https://bmkg.go.id/', headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
     except Exception:
         return None
+
     if content.status_code == 200:
-        print(content.text)
-        # soup = BeautifulSoup(content)
-        # print(soup.prettify())
+        soup = BeautifulSoup(content.text, 'html.parser')
+        tnw = soup.find('span', {'class':'waktu'})
+        tnw = tnw.text.split(', ')
+
+        tanggal = tnw[0]
+        waktu = tnw[1]
 
         hasil = dict()
-        hasil['tanggal'] = '19 April 2024'
-        hasil['waktu'] = '14:22:55 WIB'
+        hasil['tanggal'] = tanggal
+        hasil['waktu'] = waktu
         hasil['magnitudo'] = 3.5
         hasil['kedalaman'] = '6 km'
         hasil['lokasi'] = '2.93 LS - 119.40 BT'
